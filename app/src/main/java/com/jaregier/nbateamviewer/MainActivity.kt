@@ -1,11 +1,11 @@
 package com.jaregier.nbateamviewer
 
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.jaregier.nbateamviewer.ui.TeamListViewModel
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         MyApplication.getInstance().getMyComponent().inject(this)
 
         viewModel = ViewModelProviders.of(this, teamListViewModelFactory)[TeamListViewModel::class.java]
-
         viewModel.fetchTeams()
 
         setContentView(R.layout.activity_main)
@@ -37,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         compositeDisposable.addAll(viewModel.teamsSubject.subscribe {
-
+            // Update UI
         })
     }
 

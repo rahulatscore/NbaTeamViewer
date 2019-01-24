@@ -1,4 +1,4 @@
-package com.jaregier.nbateamviewer.data
+package com.jaregier.nbateamviewer.data.network
 
 import com.google.gson.annotations.SerializedName
 

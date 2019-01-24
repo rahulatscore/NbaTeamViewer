@@ -1,6 +1,9 @@
 package com.jaregier.nbateamviewer.di
 
-import com.jaregier.nbateamviewer.data.TeamService
+import androidx.room.Room
+import com.jaregier.nbateamviewer.MyApplication
+import com.jaregier.nbateamviewer.data.database.AppDatabase
+import com.jaregier.nbateamviewer.data.network.TeamService
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -10,6 +13,7 @@ import javax.inject.Singleton
 
 @Module
 class MyModule {
+
     @Singleton
     @Provides
     fun provideRetrofit() = Retrofit.Builder()
@@ -20,4 +24,17 @@ class MyModule {
 
     @Provides
     fun provideTeamService(retrofit: Retrofit) = retrofit.create(TeamService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideDatabase() = Room.databaseBuilder(
+            MyApplication.getInstance(),
+            AppDatabase::class.java, "nba-database"
+    ).build()
+
+    @Provides
+    fun provideTeamDao(appDatabase: AppDatabase) = appDatabase.teamDao()
+
+    @Provides
+    fun providePlayerDao(appDatabase: AppDatabase) = appDatabase.playerDao()
 }

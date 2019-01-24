@@ -1,26 +1,28 @@
 package com.jaregier.nbateamviewer.ui
 
-import android.arch.lifecycle.ViewModel
-import com.jaregier.nbateamviewer.data.Team
-import com.jaregier.nbateamviewer.data.TeamService
+import androidx.lifecycle.ViewModel
+import com.jaregier.nbateamviewer.data.network.Team
+import com.jaregier.nbateamviewer.domain.TeamsUseCase
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
-class TeamListViewModel @Inject constructor(private val teamService: TeamService) : ViewModel() {
+class TeamListViewModel @Inject constructor(private val teamsUseCase: TeamsUseCase) : ViewModel() {
 
     val teamsSubject = BehaviorSubject.create<List<Team>>()
 
     private val compositeDisposable = CompositeDisposable()
 
     fun fetchTeams() {
-        compositeDisposable.addAll(teamService.getTeams()
+        compositeDisposable.addAll(teamsUseCase.getTeams()
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe { teams, _ ->
+                .subscribe({ teams ->
                     if (teams != null) teamsSubject.onNext(teams)
-                }
+                }, {
+                    // handle errors
+                })
         )
     }
 

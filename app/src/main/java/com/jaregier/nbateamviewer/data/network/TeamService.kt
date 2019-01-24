@@ -1,4 +1,4 @@
-package com.jaregier.nbateamviewer.data
+package com.jaregier.nbateamviewer.data.network
 
 import io.reactivex.Single
 import retrofit2.http.GET
