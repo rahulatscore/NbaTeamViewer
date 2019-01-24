@@ -6,7 +6,10 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.jaregier.nbateamviewer.ui.TeamListAdapter
 import com.jaregier.nbateamviewer.ui.TeamListViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -20,6 +23,8 @@ class MainActivity : AppCompatActivity() {
 
     private val compositeDisposable = CompositeDisposable()
 
+    private val teamListAdapter = TeamListAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,15 +34,21 @@ class MainActivity : AppCompatActivity() {
         viewModel.fetchTeams()
 
         setContentView(R.layout.activity_main)
+
+        teams_recycler_view.adapter = teamListAdapter
+        teams_recycler_view.layoutManager = LinearLayoutManager(this)
+
         setSupportActionBar(toolbar)
     }
 
     override fun onResume() {
         super.onResume()
 
-        compositeDisposable.addAll(viewModel.teamsSubject.subscribe {
-            // Update UI
-        })
+        compositeDisposable.addAll(viewModel.teamsSubject
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe { teams ->
+                    teams_recycler_view.post { teamListAdapter.teams = teams }
+                })
     }
 
     override fun onPause() {
