@@ -1,4 +1,4 @@
-package com.jaregier.nbateamviewer
+package com.jaregier.nbateamviewer.ui.teams
 
 import android.os.Bundle
 import android.view.Menu
@@ -7,8 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jaregier.nbateamviewer.ui.TeamListAdapter
-import com.jaregier.nbateamviewer.ui.TeamListViewModel
+import com.jaregier.nbateamviewer.MyApplication
+import com.jaregier.nbateamviewer.R
+import com.jaregier.nbateamviewer.ui.players.PlayerActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val teamListAdapter = TeamListAdapter()
+    private val teamListAdapter = TeamListAdapter(::handleTeamClicked)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,5 +72,9 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun handleTeamClicked(teamId: Int) {
+        PlayerActivity.start(this, teamId)
     }
 }

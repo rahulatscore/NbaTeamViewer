@@ -1,4 +1,4 @@
-package com.jaregier.nbateamviewer.ui
+package com.jaregier.nbateamviewer.ui.teams
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,9 @@ import com.jaregier.nbateamviewer.R
 import com.jaregier.nbateamviewer.data.network.Team
 import kotlinx.android.synthetic.main.layout_team.view.*
 
-class TeamListAdapter : RecyclerView.Adapter<TeamViewHolder>() {
+typealias TeamClickListener = (teamId: Int) -> Unit
+
+class TeamListAdapter(private val teamClickListener: TeamClickListener) : RecyclerView.Adapter<TeamViewHolder>() {
 
     var teams: List<Team> = emptyList()
         set(value) {
@@ -17,7 +19,7 @@ class TeamListAdapter : RecyclerView.Adapter<TeamViewHolder>() {
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            TeamViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_team, parent, false))
+            TeamViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_team, parent, false), teamClickListener)
 
     override fun getItemCount() = teams.size
 
@@ -25,7 +27,7 @@ class TeamListAdapter : RecyclerView.Adapter<TeamViewHolder>() {
 
 }
 
-class TeamViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+class TeamViewHolder(private val view: View, private val teamClickListener: TeamClickListener) : RecyclerView.ViewHolder(view) {
     fun bind(team: Team) {
         view.team_name.text = team.fullName
 
@@ -36,6 +38,10 @@ class TeamViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
         view.wins_losses_textview.text = winsLossesString
 
-        view.team_layout.setOnClickListener {  }
+        view.team_layout.setOnClickListener {
+            team.id?.let {teamId ->
+                teamClickListener.invoke(teamId)
+            }
+        }
     }
 }

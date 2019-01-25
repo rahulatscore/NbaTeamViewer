@@ -1,4 +1,4 @@
-package com.jaregier.nbateamviewer.ui
+package com.jaregier.nbateamviewer.ui.teams
 
 import androidx.lifecycle.ViewModel
 import com.jaregier.nbateamviewer.data.network.Team

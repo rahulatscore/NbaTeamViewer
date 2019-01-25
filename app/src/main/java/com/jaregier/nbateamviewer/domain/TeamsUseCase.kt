@@ -31,12 +31,12 @@ class TeamsUseCase @Inject constructor(
 
     private fun addTeamsToDatabase(teams: List<Team>) {
         val teamEntities = mutableListOf<TeamEntity>()
-        var playerEntities = emptyList<PlayerEntity>()
+        val playerEntities = mutableListOf<PlayerEntity>()
 
         for (team in teams) {
             if (team.id != null) {
                 teamEntities.add(TeamEntity(team.id, team.wins, team.losses, team.fullName))
-                playerEntities = getPlayersForDatabase(team)
+                playerEntities.addAll(getPlayersForDatabase(team))
             }
         }
 
@@ -52,7 +52,7 @@ class TeamsUseCase @Inject constructor(
 
         for (player in team.players) {
             if (player.id != null) {
-                playerEntities.add(PlayerEntity(team.id, player.id, player.firstName, player.lastName, player.position, player.number))
+                playerEntities.add(PlayerEntity(player.id, team.id, player.firstName, player.lastName, player.position, player.number))
             }
         }
 
