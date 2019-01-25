@@ -3,8 +3,15 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.jaregier.nbateamviewer.ui.teams.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:id="@+id/sort_alphabetically"
+        android:title="@string/sort_alphabetically"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/sort_by_wins"
+        android:title="@string/sort_by_wins"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/sort_by_losses"
+        android:title="@string/sort_by_losses"
         app:showAsAction="never"/>
 </menu>

@@ -18,6 +18,8 @@ class TeamsUseCase @Inject constructor(
     fun getTeams() = Flowable.concat(fetchTeamsFromDb().toFlowable(), fetchTeamsFromNetwork().toFlowable())
             .subscribeOn(Schedulers.io())
 
+    fun getTeam(teamId: Int) = teamDao.getTeam(teamId)
+
     private fun fetchTeamsFromDb() = teamDao.getTeams()
             .flatMap { teams ->
                 Flowable.fromIterable(teams)
@@ -57,6 +59,5 @@ class TeamsUseCase @Inject constructor(
         }
 
         return playerEntities
-
     }
 }

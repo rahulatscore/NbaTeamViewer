@@ -43,6 +43,7 @@ class PlayerActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)[PlayerViewModel::class.java]
         viewModel.teamId = intent.getIntExtra(TEAM_ID, 0)
         viewModel.fetchPlayers()
+        viewModel.getTeam()
 
         setContentView(R.layout.activity_player)
 
@@ -57,6 +58,13 @@ class PlayerActivity : AppCompatActivity() {
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     playerListAdapter.players = it
+                }
+        )
+
+        compositeDisposable.addAll(viewModel.teamSubject
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    team_name.text = it.fullName
                 }
         )
     }

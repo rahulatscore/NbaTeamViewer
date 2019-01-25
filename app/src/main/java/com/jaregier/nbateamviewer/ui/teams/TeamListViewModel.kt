@@ -14,8 +14,15 @@ class TeamListViewModel @Inject constructor(private val teamsUseCase: TeamsUseCa
 
     private val compositeDisposable = CompositeDisposable()
 
+    var currentSortOrder = SortOptions.ALPHABETICAL
+        set(value) {
+            field = value
+            sort()
+        }
+
     fun fetchTeams() {
         compositeDisposable.addAll(teamsUseCase.getTeams()
+                .map { sortTeams(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe({ teams ->
@@ -26,10 +33,31 @@ class TeamListViewModel @Inject constructor(private val teamsUseCase: TeamsUseCa
         )
     }
 
+    private fun sort() {
+        val sortedList = sortTeams(teamsSubject.value)
+        sortedList?.let {
+            teamsSubject.onNext(it)
+        }
+    }
+
+    private fun sortTeams(teams: List<Team>?): List<Team>? {
+        return when (currentSortOrder) {
+            SortOptions.ALPHABETICAL -> teams?.sortedBy { it.fullName }
+            SortOptions.WINS -> teams?.sortedByDescending { it.wins }
+            SortOptions.LOSSES -> teams?.sortedByDescending { it.losses }
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
 
         compositeDisposable.clear()
     }
+}
+
+enum class SortOptions {
+    ALPHABETICAL,
+    WINS,
+    LOSSES
 }
 
