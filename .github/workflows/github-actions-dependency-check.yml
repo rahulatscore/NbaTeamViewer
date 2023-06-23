@@ -1,3 +1,4 @@
+name: Dependencies Check
 on: [push]
 jobs:
   depchecktest:
@@ -11,23 +12,4 @@ jobs:
           distribution: 'zulu' # See 'Supported distributions' for available options
           java-version: '17'
       - name: Check java version
-          run: java --version
-
-#      - name: Build project with Maven
-#        run: mvn clean install
-#      - name: Depcheck
-#        uses: dependency-check/Dependency-Check_Action@main
-#        id: Depcheck
-#        with:
-#          project: 'NbaTeamViewer'
-#          path: '.'
-#          format: 'HTML'
-#          out: 'reports' # this is the default, no need to specify unless you wish to override it
-#          args: >
-#            --failOnCVSS 7
-#            --enableRetired
-#      - name: Upload Test results
-#        uses: actions/upload-artifact@master
-#        with:
-#          name: Depcheck report
-#          path: ${{github.workspace}}/reports
+        run: java --version
