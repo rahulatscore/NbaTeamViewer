@@ -1,3 +1,4 @@
+.bash_profile
 *.iml
 .gradle
 /local.properties
