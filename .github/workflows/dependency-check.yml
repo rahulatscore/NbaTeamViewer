@@ -11,12 +11,11 @@ jobs:
         with:
           distribution: 'zulu' # See 'Supported distributions' for available options
           java-version: '17'
-      - name: Set up Maven
-          uses: stCarolas/setup-maven@v4.5
-          with:
-            maven-version: 3.9.3
+      - uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.9.3
       - name: Build project with Maven
-          run: mvn clean install
+        run: mvn clean install
       - name: Build project with Maven
         run: mvn clean install
       - name: Depcheck
