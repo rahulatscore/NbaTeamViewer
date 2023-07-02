@@ -1,38 +1,11 @@
 name: Dependency Check
 on: [push]
 jobs:
-  depchecktest:
+  main:
     runs-on: ubuntu-latest
-    name: depecheck_test
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Java
-        uses: actions/setup-java@v3
+      - name: License compliance check
+        uses: mikaelvesavuori/license-compliance-action@v1.0.2
         with:
-          distribution: 'zulu' # See 'Supported distributions' for available options
-          java-version: '17'
-      - name: setup maven
-        uses: stCarolas/setup-maven@v4.5
-        with:
-          maven-version: 3.9.3
-      - name: Build project with Maven
-        run: mvn clean install
-      - name: Build project with Maven
-        run: mvn clean install
-      - name: Depcheck
-        uses: dependency-check/Dependency-Check_Action@main
-        id: Depcheck
-        with:
-          project: 'NbaTeamViewer'
-          path: '.'
-          format: 'HTML'
-          out: 'reports' # this is the default, no need to specify unless you wish to override it
-          args: >
-            --failOnCVSS 7
-            --enableRetired
-      - name: Upload Test results
-        uses: actions/upload-artifact@master
-        with:
-          name: Depcheck report
-          path: ${{github.workspace}}/reports
+          allow_licenses: "https://www.mockachino.com/d6a9ace1-8013-47/licenses"
+          nested_field: "licenseString"
