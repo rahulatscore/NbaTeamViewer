@@ -7,5 +7,4 @@ jobs:
       - name: License compliance check
         uses: mikaelvesavuori/license-compliance-action@v1.0.2
         with:
-          allow_licenses: "https://www.mockachino.com/d6a9ace1-8013-47/licenses"
-          nested_field: "licenseString"
+          allow_licenses: "MIT"
